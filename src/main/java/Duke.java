@@ -12,21 +12,29 @@ public class Duke {
         System.out.println("Hello from\n" + logo);
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
-        ArrayList<String> todo = new ArrayList<>();
+        ArrayList<Task> todo = new ArrayList<>();
         Scanner input = new Scanner(System.in);
         String inout = input.nextLine();
+
         while (!inout.equals("bye")) {
+            Task task = new Task (inout);
             //System.out.println(inout);
+            String[] word = inout.split(" ");
             if (inout.equals("list")) {
                 int i = 0;
-                while (i < todo.size()) {
+                for (Task t: todo) {
                     System.out.println((i + 1) + ". ");
-                    System.out.println(todo.get(i));
+                    System.out.println(t);
                     i++;
                 }
+
+            }
+            else if (word[0].equals("done")) {
+                int num = Integer.parseInt(word[1]);
+                todo.get(num - 1).Done();
             }
             else {
-                todo.add(inout);
+                todo.add(task);
                 System.out.println("added: ");
                 System.out.println(inout);
             }
