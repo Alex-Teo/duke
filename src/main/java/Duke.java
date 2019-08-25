@@ -12,29 +12,54 @@ public class Duke {
         System.out.println("Hello from\n" + logo);
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
-        ArrayList<Task> todo = new ArrayList<>();
+        ArrayList<Task> yettodo = new ArrayList<>();
         Scanner input = new Scanner(System.in);
         String inout = input.nextLine();
 
         while (!inout.equals("bye")) {
-            Task task = new Task (inout);
+            Task task;
             //System.out.println(inout);
-            String[] word = inout.split(" ");
+            String[] word = inout.split(" ", 2);
             if (inout.equals("list")) {
+                task = new Task (inout);
+                System.out.println ("Here are the tasks in your list:");
                 int i = 0;
-                for (Task t: todo) {
+                for (Task t: yettodo) {
                     System.out.println((i + 1) + ". ");
                     System.out.println(t);
                     i++;
                 }
-
             }
             else if (word[0].equals("done")) {
                 int num = Integer.parseInt(word[1]);
-                todo.get(num - 1).Done();
+                yettodo.get(num - 1).Done();
+            }
+            else if (word[0].equals("todo")) {
+                System.out.println ("Got it. I've added this task:");
+                task = new Todo (word[1]);
+                yettodo.add(task);
+                System.out.println(task);
+                System.out.println ("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
+            }
+            else if (word[0].equals("deadline")) {
+                System.out.println ("Got it. I've added this task:");
+                String[] holder = word[1].split (" /by ", 2);
+                task = new Deadline (holder[0], holder[1]);
+                yettodo.add(task);
+                System.out.println(task);
+                System.out.println ("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
+            }
+            else if (word[0].equals("event")) {
+                System.out.println ("Got it. I've added this task:");
+                String[] holder = word[1].split (" /at ", 2);
+                task = new Event (holder[0], holder[1]);
+                yettodo.add(task);
+                System.out.println(task);
+                System.out.println ("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
             }
             else {
-                todo.add(task);
+                task = new Task (inout);
+                yettodo.add(task);
                 System.out.println("added: ");
                 System.out.println(inout);
             }
