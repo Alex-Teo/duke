@@ -1,9 +1,20 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.*;
+import java.util.stream.Collectors;
 import java.util.Scanner;
 
+
 public class Duke {
+    private static String pathName = "C:\\Users\\axisr\\OneDrive\\Desktop\\Year 2 Sem 1\\CS2113T\\duke.txt";
+    private static ArrayList<Task> yettodo = new ArrayList<>();
+    private static addtoFile Fileread = new addtoFile(pathName, yettodo);
+    public static ArrayList<Task> getYettodo() {
+        return yettodo;
+    }
+
     public static void main(String[] args) {
+
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -12,7 +23,7 @@ public class Duke {
         System.out.println("Hello from\n" + logo);
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
-        ArrayList<Task> yettodo = new ArrayList<>();
+
         Scanner input = new Scanner(System.in);
         String inout = input.nextLine();
         try {
@@ -33,6 +44,7 @@ public class Duke {
                     try {
                         int num = Integer.parseInt(word[1]);
                         yettodo.get(num - 1).Done();
+                        Fileread.fileUpdate();
                     }
                     catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println ("Done what?");
@@ -43,6 +55,7 @@ public class Duke {
                         task = new Todo(word[1]);
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
+                        Fileread.fileAddition();
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -57,6 +70,7 @@ public class Duke {
                         task = new Deadline(holder[0], holder[1]);
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
+                        Fileread.fileAddition();
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -70,6 +84,7 @@ public class Duke {
                         task = new Event(holder[0], holder[1]);
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
+                        Fileread.fileAddition();
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -81,16 +96,17 @@ public class Duke {
                     try {
                         task = new Task(inout);
                         yettodo.add(task);
+                        Fileread.fileAddition();
                         System.out.println("added: ");
                         System.out.println(inout);
                     }
                     catch(ArrayIndexOutOfBoundsException e){
-                        System.out.println("Being Air seems nice");
+                        System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-()");
                     }
+
                 }
                 inout = input.nextLine();
             }
-
 
             System.out.println("Bye. Hope to see you again soon!");
 
@@ -99,4 +115,5 @@ public class Duke {
             System.out.println ("That's a wrap");
         }
     }
+
 }

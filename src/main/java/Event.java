@@ -1,4 +1,8 @@
 public class Event extends Task{
+    public String getAt() {
+        return at;
+    }
+
     private String at;
 
     public Event(String description, String at) {
