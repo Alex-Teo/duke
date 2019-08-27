@@ -9,7 +9,7 @@ public class Duke {
     private static String pathName = "C:\\Users\\axisr\\OneDrive\\Desktop\\Year 2 Sem 1\\CS2113T\\duke.txt";
     private static ArrayList<Task> yettodo = new ArrayList<>();
     private static addtoFile Fileread = new addtoFile(pathName, yettodo);
-    public static ArrayList<Task> getYettodo() {
+    public static ArrayList<Task> getYettodo()  {
         return yettodo;
     }
 
