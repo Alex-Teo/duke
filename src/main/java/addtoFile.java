@@ -17,7 +17,7 @@ public class addtoFile {
     public ArrayList <Task> fileReader() {
 
         try {
-            File f = new File(pathName + "duke.txt");
+            File f = new File("./duke.txt");
             Scanner s = new Scanner(f);
             while (s.hasNext()) {
                 tasks.add(ParseTextToTask.Converter(s.nextLine()));
@@ -31,12 +31,11 @@ public class addtoFile {
     }
 
 
-
-    public void fileAddition() {
-        File savefile = new File(pathName + "duke.txt");
+    public void fileAddition(String message) {
+        File savefile = new File("./duke.txt");
         try {
             FileWriter Writer = new FileWriter(savefile, true);
-            Writer.write(super.toString() + "\n" );
+            Writer.write(message + "\n" );
             Writer.close();
         }
         catch (IOException e) {
@@ -45,7 +44,7 @@ public class addtoFile {
 
     }
     public void fileUpdate() {
-        File savefile = new File(pathName + "duke.txt");
+        File savefile = new File("./duke.txt");
         try {
             FileWriter Writer = new FileWriter(savefile, false);
             for (Task t : tasks) {

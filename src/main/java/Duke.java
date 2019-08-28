@@ -3,12 +3,14 @@ import java.util.List;
 import java.io.*;
 import java.util.stream.Collectors;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class Duke {
-    private static String pathName = "C:\\Users\\axisr\\OneDrive\\Desktop\\Year 2 Sem 1\\CS2113T\\duke.txt";
-    private static ArrayList<Task> yettodo = new ArrayList<>();
-    private static addtoFile Fileread = new addtoFile(pathName, yettodo);
+    private static String pathName = "C:\\Users\\axisr\\OneDrive\\Desktop\\Year 2 Sem 1\\CS2113T";
+    private static ArrayList<Task> yettodo = new ArrayList<Task>();
+    private static addtoFile Fileread = new addtoFile("./duke.txt", yettodo);
     public static ArrayList<Task> getYettodo()  {
         return yettodo;
     }
@@ -23,7 +25,7 @@ public class Duke {
         System.out.println("Hello from\n" + logo);
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
-
+        yettodo = Fileread.fileReader();
         Scanner input = new Scanner(System.in);
         String inout = input.nextLine();
         try {
@@ -55,7 +57,7 @@ public class Duke {
                         task = new Todo(word[1]);
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
-                        Fileread.fileAddition();
+                        Fileread.fileAddition(task.toString());
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -67,10 +69,11 @@ public class Duke {
                     try {
 
                         String[] holder = word[1].split(" /by ", 2);
+                        String[] deadlineTime = holder[1].split(" ", 2);
                         task = new Deadline(holder[0], holder[1]);
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
-                        Fileread.fileAddition();
+                        Fileread.fileAddition(task.toString());
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -82,9 +85,10 @@ public class Duke {
 
                         String[] holder = word[1].split(" /at ", 2);
                         task = new Event(holder[0], holder[1]);
+                        String[] eventTime = holder[1].split(" ", 2);
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
-                        Fileread.fileAddition();
+                        Fileread.fileAddition(task.toString());
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -96,7 +100,7 @@ public class Duke {
                     try {
                         task = new Task(inout);
                         yettodo.add(task);
-                        Fileread.fileAddition();
+                        Fileread.fileAddition(inout);
                         System.out.println("added: ");
                         System.out.println(inout);
                     }

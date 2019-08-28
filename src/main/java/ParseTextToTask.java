@@ -23,6 +23,7 @@ public class ParseTextToTask  {
             try {
 
                 String[] holder = word[1].split(" /by ", 2);
+                String[] deadlineTime = holder[1].split(" ", 2);
                 //task =
                 return new Deadline(holder[0], holder[1]);
                         /*System.out.println("Got it. I've added this task:");
@@ -47,7 +48,7 @@ public class ParseTextToTask  {
             }
         } else {
             //print("error")
-            System.out.println("bye bye");
+            System.out.println(" ");
         }
         return new Task("Garbage");
 
