@@ -24,6 +24,7 @@ public class Duke {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
         System.out.println("Hello! I'm Duke");
+        System.out.println("For entering time and date, please enter it in this format: yyyy-MM-dd HH:mm");
         System.out.println("What can I do for you?");
         yettodo = Fileread.fileReader();
         Scanner input = new Scanner(System.in);
@@ -69,8 +70,10 @@ public class Duke {
                     try {
 
                         String[] holder = word[1].split(" /by ", 2);
-                        String[] deadlineTime = holder[1].split(" ", 2);
-                        task = new Deadline(holder[0], holder[1]);
+                        //String[] deadlineTime = holder[1].split(" ", 2);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
+                        task = new Deadline(holder[0], formatDateTime.format(formatter));
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
                         Fileread.fileAddition(task.toString());
@@ -84,8 +87,10 @@ public class Duke {
                     try {
 
                         String[] holder = word[1].split(" /at ", 2);
-                        task = new Event(holder[0], holder[1]);
-                        String[] eventTime = holder[1].split(" ", 2);
+                        //String[] eventTime = holder[1].split(" ", 2);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
+                        task = new Event(holder[0], formatDateTime.format(formatter));
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
                         Fileread.fileAddition(task.toString());

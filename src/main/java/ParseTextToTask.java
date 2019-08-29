@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ParseTextToTask  {
 
@@ -23,9 +25,11 @@ public class ParseTextToTask  {
             try {
 
                 String[] holder = word[1].split(" /by ", 2);
-                String[] deadlineTime = holder[1].split(" ", 2);
-                //task =
-                return new Deadline(holder[0], holder[1]);
+                //String[] deadlineTime = holder[1].split(" ", 2);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
+                task = new Deadline(holder[0], formatDateTime.format(formatter));
+                return new Deadline(holder[0], formatDateTime.format(formatter));
                         /*System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
                         System.out.println(task);
@@ -37,8 +41,11 @@ public class ParseTextToTask  {
             try {
 
                 String[] holder = word[1].split(" /at ", 2);
-                //task =
-                return new Event(holder[0], holder[1]);
+                //String[] eventTime = holder[1].split(" ", 2);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
+                task = new Event(holder[0], formatDateTime.format(formatter));
+                return new Event(holder[0], formatDateTime.format(formatter));
                         /*System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
                         System.out.println(task);

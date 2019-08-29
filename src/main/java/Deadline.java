@@ -6,7 +6,7 @@ public class Deadline extends Task {
     }
 
     private String by;
-    private String time;
+    //private String time;
 
     public Deadline(String description, String by) {
         super(description);
