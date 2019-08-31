@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.io.*;
 import java.util.stream.Collectors;
 import java.util.Scanner;
@@ -8,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 
 public class Duke {
-    private static String pathName = "C:\\Users\\axisr\\OneDrive\\Desktop\\Year 2 Sem 1\\CS2113T";
+    //private static String pathName = "C:\\Users\\axisr\\OneDrive\\Desktop\\Year 2 Sem 1\\CS2113T";
     private static ArrayList<Task> yettodo = new ArrayList<Task>();
     private static addtoFile Fileread = new addtoFile("./duke.txt", yettodo);
     public static ArrayList<Task> getYettodo()  {
@@ -55,6 +54,7 @@ public class Duke {
                     try {
                         int num = Integer.parseInt(word[1]);
                         System.out.println ("Noted. I've removed this task: ");
+                        System.out.println(yettodo.get(num - 1));
                         yettodo.remove(num - 1);
                         //Fileread.fileUpdate();
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
@@ -62,7 +62,32 @@ public class Duke {
                     catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println("Delete what?");
                     }
-                } else if (word[0].equals("todo")) {
+
+                }
+                else if (word[0].equals("find")) {
+                    int counter = 0;
+                    System.out.println ("Here are the matching tasks in your list:");
+                    try {
+                        for (Task t: yettodo) {
+                            if (t.toString().contains(word[1])) {
+                                System.out.println(yettodo.indexOf(t) + 1 + ". " + t.toString());
+                                counter ++;
+                            }
+                            else {
+
+                            }
+
+                        }
+                        if (counter == 0) {
+                            System.out.println ("Nothing found!");
+                        }
+
+                    }
+                    catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println ("Gone shit!");
+                    }
+                }
+                else if (word[0].equals("todo")) {
                     try {
 
                         task = new Todo(word[1]);
