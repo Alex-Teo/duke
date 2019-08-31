@@ -48,9 +48,19 @@ public class Duke {
                         int num = Integer.parseInt(word[1]);
                         yettodo.get(num - 1).Done();
                         Fileread.fileUpdate();
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Done what?");
+                    }
+                } else if (word[0].equals("delete")) {
+                    try {
+                        int num = Integer.parseInt(word[1]);
+                        System.out.println ("Noted. I've removed this task: ");
+                        yettodo.remove(num - 1);
+                        //Fileread.fileUpdate();
+                        System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
                     catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println ("Done what?");
+                        System.out.println("Delete what?");
                     }
                 } else if (word[0].equals("todo")) {
                     try {
@@ -58,7 +68,7 @@ public class Duke {
                         task = new Todo(word[1]);
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
-                        Fileread.fileAddition(task.toString());
+                        Fileread.fileAddition(inout);
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -76,7 +86,7 @@ public class Duke {
                         task = new Deadline(holder[0], formatDateTime.format(formatter));
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
-                        Fileread.fileAddition(task.toString());
+                        Fileread.fileAddition(inout);
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -93,7 +103,7 @@ public class Duke {
                         task = new Event(holder[0], formatDateTime.format(formatter));
                         System.out.println("Got it. I've added this task:");
                         yettodo.add(task);
-                        Fileread.fileAddition(task.toString());
+                        Fileread.fileAddition(inout);
                         System.out.println(task);
                         System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
                     }
@@ -117,10 +127,12 @@ public class Duke {
                 inout = input.nextLine();
             }
 
+            Fileread.saveData();
             System.out.println("Bye. Hope to see you again soon!");
 
-        }
-        finally {
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             System.out.println ("That's a wrap");
         }
     }

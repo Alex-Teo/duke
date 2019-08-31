@@ -65,9 +65,9 @@ public class ParseTextToTask  {
         if (example instanceof Todo) {
             return "todo " + example.description;
         } else if (example instanceof Deadline) {
-            return "deadline " + example.description + "/by " + ((Deadline) example).getBy();
+            return "deadline " + example.description + " /by " + ((Deadline) example).getBy();
         } else if (example instanceof Event) {
-            return "event " + example.description + "/at " + ((Event) example).getAt();
+            return "event " + example.description + " /at " + ((Event) example).getAt();
         }
         throw new UnknownException("Failed to convert to string!");
     }

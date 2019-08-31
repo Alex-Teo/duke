@@ -14,6 +14,12 @@ public class Task {
         System.out.println(("[✔] ") + this.description);
 
     }
+
+    /*public void Delete () {
+        System.out.println ("Noted. I've removed this task: ");
+
+    }*/
+
     /*public String getStatusIcon() {
         return (isDone ? "✔" : "x"); //return tick or X symbols
     }*/

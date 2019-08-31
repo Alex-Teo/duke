@@ -60,4 +60,15 @@ public class addtoFile {
 
     }
 
+
+    public void saveData() throws Exception {
+        File savefile = new File("./duke.txt");
+        FileWriter Writer = new FileWriter(savefile, false);
+        for (Task t : tasks) {
+            Writer.write(ParseTextToTask.BackConversion(t) + "\n");
+        }
+        Writer.close();
+
+    }
+
 }
