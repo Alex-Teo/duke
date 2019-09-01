@@ -2,13 +2,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.*;
 
-public class addtoFile {
+public class Storage {
     private static String pathName = "C:\\Users\\axisr\\OneDrive\\Desktop\\Year 2 Sem 1\\CS2113T";
     //public ArrayList<Task> load();
     //public addtoFile ()
     private String filename;
     ArrayList<Task> tasks = new ArrayList<>(Duke.getYettodo());
-    public addtoFile (String pathName, ArrayList<Task> tasks) {
+    public Storage(String pathName, ArrayList<Task> tasks) {
         this.pathName = pathName;
         this.tasks = tasks;
 
@@ -20,7 +20,7 @@ public class addtoFile {
             File f = new File("./duke.txt");
             Scanner s = new Scanner(f);
             while (s.hasNext()) {
-                tasks.add(ParseTextToTask.Converter(s.nextLine()));
+                tasks.add(Parser.Converter(s.nextLine()));
             }
             return tasks;
         }
@@ -48,7 +48,7 @@ public class addtoFile {
         try {
             FileWriter Writer = new FileWriter(savefile, false);
             for (Task t : tasks) {
-                Writer.write(ParseTextToTask.BackConversion(t) + "\n");
+                Writer.write(Parser.BackConversion(t) + "\n");
                 Writer.close();
             }
         }
@@ -65,7 +65,7 @@ public class addtoFile {
         File savefile = new File("./duke.txt");
         FileWriter Writer = new FileWriter(savefile, false);
         for (Task t : tasks) {
-            Writer.write(ParseTextToTask.BackConversion(t) + "\n");
+            Writer.write(Parser.BackConversion(t) + "\n");
         }
         Writer.close();
 

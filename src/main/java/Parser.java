@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ParseTextToTask  {
+public class Parser {
 
     public static Task Converter(String line) {
         String inout = line;
