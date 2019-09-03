@@ -24,6 +24,7 @@ public class Duke extends Application{
     private TextField userInput;
     private Button sendButton;
     private Scene scene;
+    private UI ui;
     //private Image user = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     //private Image duke = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
     private static ArrayList<Task> yettodo = new ArrayList<Task>();
@@ -44,131 +45,17 @@ public class Duke extends Application{
         System.out.println("For entering time and date, please enter it in this format: yyyy-MM-dd HH:mm");
         System.out.println("What can I do for you?");
         yettodo = Fileread.fileReader();
-        Scanner input = new Scanner(System.in);
-        String inout = input.nextLine();
+        Duke duke = new Duke();
+    }
+
+    public Duke() {
+        ui = new UI();
+        parseUserCommand(ui.getUserInput());
+    }
+
+    private void parseUserCommand(String inout) {
         try {
-            while (!inout.equals("bye")) {
-                Task task;
-                //System.out.println(inout);
-                String[] word = inout.split(" ", 2);
-                if (inout.equals("list")) {
-                    task = new Task(inout);
-                    System.out.println("Here are the tasks in your list:");
-                    int i = 0;
-                    for (Task t : yettodo) {
-                        System.out.println((i + 1) + ". ");
-                        System.out.println(t);
-                        i++;
-                    }
-                } else if (word[0].equals("done")) {
-                    try {
-                        int num = Integer.parseInt(word[1]);
-                        yettodo.get(num - 1).Done();
-                        Fileread.fileUpdate();
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Done what?");
-                    }
-                } else if (word[0].equals("delete")) {
-                    try {
-                        int num = Integer.parseInt(word[1]);
-                        System.out.println ("Noted. I've removed this task: ");
-                        System.out.println(yettodo.get(num - 1));
-                        yettodo.remove(num - 1);
-                        //Fileread.fileUpdate();
-                        System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
-                    }
-                    catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Delete what?");
-                    }
-
-                }
-                else if (word[0].equals("find")) {
-                    int counter = 0;
-                    System.out.println ("Here are the matching tasks in your list:");
-                    try {
-                        for (Task t: yettodo) {
-                            if (t.toString().contains(word[1])) {
-                                System.out.println(yettodo.indexOf(t) + 1 + ". " + t.toString());
-                                counter ++;
-                            }
-                            else {
-
-                            }
-
-                        }
-                        if (counter == 0) {
-                            System.out.println ("Nothing found!");
-                        }
-
-                    }
-                    catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println ("Gone shit!");
-                    }
-                }
-                else if (word[0].equals("todo")) {
-                    try {
-
-                        task = new Todo(word[1]);
-                        System.out.println("Got it. I've added this task:");
-                        yettodo.add(task);
-                        Fileread.fileAddition(inout);
-                        System.out.println(task);
-                        System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
-                    }
-                    catch (ArrayIndexOutOfBoundsException e){
-                        System.out.println ("☹ OOPS!!! The description of a todo cannot be empty.");
-
-                    }
-                } else if (word[0].equals("deadline")) {
-                    try {
-
-                        String[] holder = word[1].split(" /by ", 2);
-                        //String[] deadlineTime = holder[1].split(" ", 2);
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                        LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
-                        task = new Deadline(holder[0], formatDateTime.format(formatter));
-                        System.out.println("Got it. I've added this task:");
-                        yettodo.add(task);
-                        Fileread.fileAddition(inout);
-                        System.out.println(task);
-                        System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
-                    }
-                    catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println ("Wow so free is it?");
-                    }
-                } else if (word[0].equals("event")) {
-                    try {
-
-                        String[] holder = word[1].split(" /at ", 2);
-                        //String[] eventTime = holder[1].split(" ", 2);
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                        LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
-                        task = new Event(holder[0], formatDateTime.format(formatter));
-                        System.out.println("Got it. I've added this task:");
-                        yettodo.add(task);
-                        Fileread.fileAddition(inout);
-                        System.out.println(task);
-                        System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
-                    }
-                    catch(ArrayIndexOutOfBoundsException e){
-                        System.out.println("Lepak?");
-                    }
-                }
-                else {
-                    try {
-                        task = new Task(inout);
-                        yettodo.add(task);
-                        Fileread.fileAddition(inout);
-                        System.out.println("added: ");
-                        System.out.println(inout);
-                    }
-                    catch(ArrayIndexOutOfBoundsException e){
-                        System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-()");
-                    }
-
-                }
-                inout = input.nextLine();
-            }
+            execute(inout);
 
             Fileread.saveData();
             System.out.println("Bye. Hope to see you again soon!");
@@ -177,6 +64,167 @@ public class Duke extends Application{
             e.printStackTrace();
         } finally {
             System.out.println ("That's a wrap");
+        }
+    }
+
+    private void execute(String inout) {
+        while (!inout.equals("bye")) {
+            Task task;
+            //System.out.println(inout);
+            String[] word = inout.split(" ", 2);
+            if (inout.equals("list")) {
+                callList(inout);
+            } else if (word[0].equals("done")) {
+                markasDone(word[1]);
+            } else if (word[0].equals("delete")) {
+                delete(word[1]);
+            }
+            else if (word[0].equals("find")) {
+                finding(word[1]);
+            }
+            else if (word[0].equals("todo")) {
+                justdo(inout, word);
+            } else if (word[0].equals("deadline")) {
+                deadlineAssign(inout, word[1]);
+            } else if (word[0].equals("event")) {
+                eventAssign(inout, word[1]);
+            }
+            else {
+                stuffAdd(inout);
+
+            }
+            ui.getUserInput();
+        }
+    }
+
+    private void callList(String inout) {
+        Task task;
+        task = new Task(inout);
+        System.out.println("Here are the tasks in your list:");
+        int i = 0;
+        for (Task t : yettodo) {
+            System.out.println((i + 1) + ". ");
+            System.out.println(t);
+            i++;
+        }
+    }
+
+    private void stuffAdd(String inout) {
+        Task task;
+        try {
+            task = new Task(inout);
+            yettodo.add(task);
+            Fileread.fileAddition(inout);
+            System.out.println("added: ");
+            System.out.println(inout);
+        }
+        catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-()");
+        }
+    }
+
+    private void markasDone(String s) {
+        try {
+            int num = Integer.parseInt(s);
+            yettodo.get(num - 1).Done();
+            Fileread.fileUpdate();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Done what?");
+        }
+    }
+
+    private void eventAssign(String inout, String s) {
+        Task task;
+        try {
+
+            String[] holder = s.split(" /at ", 2);
+            //String[] eventTime = holder[1].split(" ", 2);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
+            task = new Event(holder[0], formatDateTime.format(formatter));
+            System.out.println("Got it. I've added this task:");
+            yettodo.add(task);
+            Fileread.fileAddition(inout);
+            System.out.println(task);
+            System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
+        }
+        catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("Lepak?");
+        }
+    }
+
+    private void deadlineAssign(String inout, String s) {
+        Task task;
+        try {
+
+            String[] holder = s.split(" /by ", 2);
+            //String[] deadlineTime = holder[1].split(" ", 2);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
+            task = new Deadline(holder[0], formatDateTime.format(formatter));
+            System.out.println("Got it. I've added this task:");
+            yettodo.add(task);
+            Fileread.fileAddition(inout);
+            System.out.println(task);
+            System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println ("Wow so free is it?");
+        }
+    }
+
+    private void justdo(String inout, String[] word) {
+        Task task;
+        try {
+
+            task = new Todo(word[1]);
+            System.out.println("Got it. I've added this task:");
+            yettodo.add(task);
+            Fileread.fileAddition(inout);
+            System.out.println(task);
+            System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println ("☹ OOPS!!! The description of a todo cannot be empty.");
+
+        }
+    }
+
+    private void finding(String s) {
+        int counter = 0;
+        System.out.println ("Here are the matching tasks in your list:");
+        try {
+            for (Task t: yettodo) {
+                if (t.toString().contains(s)) {
+                    System.out.println(yettodo.indexOf(t) + 1 + ". " + t.toString());
+                    counter ++;
+                }
+                else {
+
+                }
+
+            }
+            if (counter == 0) {
+                System.out.println ("Nothing found!");
+            }
+
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println ("Gone shit!");
+        }
+    }
+
+    private void delete(String s) {
+        try {
+            int num = Integer.parseInt(s);
+            System.out.println ("Noted. I've removed this task: ");
+            System.out.println(yettodo.get(num - 1));
+            yettodo.remove(num - 1);
+            //Fileread.fileUpdate();
+            System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Delete what?");
         }
     }
     /*
