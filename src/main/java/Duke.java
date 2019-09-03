@@ -46,6 +46,10 @@ public class Duke extends Application{
         yettodo = Fileread.fileReader();
         Scanner input = new Scanner(System.in);
         String inout = input.nextLine();
+        ParseUserInput(input, inout);
+    }
+
+    private static void ParseUserInput(Scanner input, String inout) {
         try {
             while (!inout.equals("bye")) {
                 Task task;
