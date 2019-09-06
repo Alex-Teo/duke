@@ -45,6 +45,11 @@ public class Duke extends Application{
         Duke duke = new Duke();
     }
 
+
+    /**
+     * sets up a duke session
+     * works until bye is typed in
+     */
     public Duke() {
         ui = new Ui();
         String inout = ui.getUserInput();
@@ -59,6 +64,11 @@ public class Duke extends Application{
         System.exit(0);
     }
 
+    /**
+     * Sets up command execution with the:
+     * @param inout  Command and description
+     *               Contents depend on the command
+     */
     private void parseUserCommand(String inout) {
         try {
             execute(inout);
@@ -70,6 +80,10 @@ public class Duke extends Application{
         }
     }
 
+    /**
+     * Execution of commands via if-else cases
+     * @param inout   Decides what method to carry out via inout
+     */
     private void execute(String inout) {
             Task task;
             //System.out.println(inout);
@@ -93,6 +107,9 @@ public class Duke extends Application{
             }
     }
 
+    /**
+     * Displays list of activities in the file
+     */
     private void callList() {
         System.out.println("Here are the tasks in your list:");
         int i = 0;
@@ -104,6 +121,11 @@ public class Duke extends Application{
     }
 
 
+    /**
+     * Changes the status of task in list to done
+     * @param s  No. of the task to be marked
+     *           should just be a no.
+     */
     private void markasDone(String s) {
         try {
             int num = Integer.parseInt(s);
@@ -114,6 +136,12 @@ public class Duke extends Application{
         }
     }
 
+    /**
+     * adds an event type task to the list
+     * @param inout
+     * @param s        Description of the event
+     *                 Contains the event, and its due date
+     */
     private void eventAssign(String inout, String s) {
         Task task;
         try {
@@ -133,6 +161,12 @@ public class Duke extends Application{
         }
     }
 
+    /**
+     *  adds a deadline type task to the list
+     * @param inout
+     * @param s         Description of the event
+     *                  Contains the event, and its due date
+     */
     private void deadlineAssign(String inout, String s) {
         Task task;
         try {
@@ -152,6 +186,12 @@ public class Duke extends Application{
         }
     }
 
+    /**
+     * adds a todo task to the list
+     * @param inout
+     * @param word      Description of the task
+     *                  Should contain a description
+     */
     private void justdo(String inout, String[] word) {
         Task task;
         try {
@@ -168,6 +208,11 @@ public class Duke extends Application{
         }
     }
 
+    /**
+     * Finds entries in the list with certain key words
+     * @param s         key word for the search
+     *                  Can be any word
+     */
     private void finding(String s) {
         int counter = 0;
         System.out.println ("Here are the matching tasks in your list:");
@@ -180,7 +225,6 @@ public class Duke extends Application{
                 else {
 
                 }
-
             }
             if (counter == 0) {
                 System.out.println ("Nothing found!");
@@ -192,13 +236,16 @@ public class Duke extends Application{
         }
     }
 
+    /**
+     * Deletes task from list
+     * @param s     the no. of the task to be deleted
+     */
     private void delete(String s) {
         try {
             int num = Integer.parseInt(s);
             System.out.println ("Noted. I've removed this task: ");
             System.out.println(yettodo.get(num - 1));
             yettodo.remove(num - 1);
-            //Fileread.fileUpdate();
             System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
         }
         catch (ArrayIndexOutOfBoundsException e) {
