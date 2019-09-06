@@ -62,7 +62,7 @@ public class Storage {
     }
 
 
-    public void saveData() throws Exception {
+    /*public void saveData() throws Exception {
         File savefile = new File("./duke.txt");
         FileWriter Writer = new FileWriter(savefile, false);
         for (Task t : tasks) {
@@ -70,6 +70,6 @@ public class Storage {
         }
         Writer.close();
 
-    }
+    }*/
 
 }

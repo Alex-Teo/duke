@@ -60,7 +60,7 @@ public class Duke extends Application{
     private void parseUserCommand(String inout) {
         try {
             execute(inout);
-            storage.saveData();
+            storage.fileUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
