@@ -1,5 +1,10 @@
 public class Task {
     public String description;
+
+    public boolean isDone() {
+        return isDone;
+    }
+
     private boolean isDone;
 
     public Task (String description) {

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -20,14 +21,14 @@ public class Duke extends Application{
     private TextField userInput;
     private Button sendButton;
     private Scene scene;
-    private UI ui;
+    private Ui ui;
     //private Image user = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     //private Image duke = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
-    private static ArrayList<Task> yettodo = new ArrayList<Task>();
+    private static ArrayList<Task> yettodo = new ArrayList<>();
     private static Storage storage = new Storage("./duke.txt", yettodo);
-    public static ArrayList<Task> getYettodo()  {
+    /*public static ArrayList<Task> getYettodo()  {
         return yettodo;
-    }
+    }*/
 
     public static void main(String[] args) {
 
@@ -45,7 +46,7 @@ public class Duke extends Application{
     }
 
     public Duke() {
-        ui = new UI();
+        ui = new Ui();
         String inout = ui.getUserInput();
         while (!inout.equals("bye")) {
             System.out.println (inout);
@@ -53,21 +54,23 @@ public class Duke extends Application{
             inout = ui.getUserInput();// do while less messy cod
             storage.fileUpdate();
         }
-
         System.out.println("Bye. Hope to see you again soon!");
+        Platform.exit();
+        System.exit(0);
     }
 
     private void parseUserCommand(String inout) {
         try {
             execute(inout);
-            storage.fileUpdate();
+
+            storage.saveData();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void execute(String inout) {
-
             Task task;
             //System.out.println(inout);
             String[] word = inout.split(" ", 2);
@@ -88,12 +91,9 @@ public class Duke extends Application{
             } else if (word[0].equals("event")) {
                 eventAssign(inout, word[1]);
             }
-
-
     }
 
     private void callList() {
-
         System.out.println("Here are the tasks in your list:");
         int i = 0;
         for (Task t : yettodo) {
@@ -108,7 +108,7 @@ public class Duke extends Application{
         try {
             int num = Integer.parseInt(s);
             yettodo.get(num - 1).Done();
-            //storage.fileUpdate();
+
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Done what?");
         }
@@ -125,8 +125,6 @@ public class Duke extends Application{
             task = new Event(holder[0], formatDateTime.format(formatter));
             System.out.println("Got it. I've added this task:");
             yettodo.add(task);
-            //storage.fileAddition(inout);
-            storage.fileUpdate();
             System.out.println(task);
             System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
         }
@@ -146,8 +144,6 @@ public class Duke extends Application{
             task = new Deadline(holder[0], formatDateTime.format(formatter));
             System.out.println("Got it. I've added this task:");
             yettodo.add(task);
-            //storage.fileAddition(inout);
-            storage.fileUpdate();
             System.out.println(task);
             System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
         }
@@ -163,8 +159,6 @@ public class Duke extends Application{
             task = new Todo(word[1]);
             System.out.println("Got it. I've added this task:");
             yettodo.add(task);
-            //storage.fileAddition(inout);
-            storage.fileUpdate();
             System.out.println(task);
             System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
         }
