@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -23,11 +24,8 @@ public class Duke extends Application{
     private UI ui;
     //private Image user = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     //private Image duke = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
-    private static ArrayList<Task> yettodo = new ArrayList<Task>();
+    private static ArrayList<Task> yettodo = new ArrayList<>();
     private static Storage storage = new Storage("./duke.txt", yettodo);
-    public static ArrayList<Task> getYettodo()  {
-        return yettodo;
-    }
 
     public static void main(String[] args) {
 
@@ -54,6 +52,8 @@ public class Duke extends Application{
             storage.fileUpdate();
         }
         System.out.println("Bye. Hope to see you again soon!");
+        Platform.exit();
+        System.exit(0);
     }
 
     private void parseUserCommand(String inout) {

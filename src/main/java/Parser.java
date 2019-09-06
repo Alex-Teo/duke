@@ -9,7 +9,10 @@ public class Parser {
         //while (!inout.equals("bye")) {
         Task task = null;
         //System.out.println(line);
-        String[] word = line.split("|", 4);
+        String[] word = line.split("\\|", 4);
+        /*for (String a : word) {
+            System.out.println (a);
+        }*/
         String time = word[2];
         if (word[0].equals("todo")) {
             try {

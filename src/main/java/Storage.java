@@ -36,8 +36,9 @@ public class Storage {
             FileWriter Writer = new FileWriter(savefile);
             for (Task t : tasks) {
                 Writer.write(Parser.convertTaskToText(t) + "\n");
-                Writer.close();
+
             }
+            Writer.close();
         }
         catch (IOException e) {
             System.out.println (e.getMessage());
