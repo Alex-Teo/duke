@@ -1,9 +1,10 @@
 import java.util.Scanner;
 
- class UI {
+public class Ui {
     private Scanner input;
-    public UI() {
+    public Ui() {
         input = new Scanner(System.in);
+
     }
 
     public String getUserInput() {
