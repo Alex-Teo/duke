@@ -4,19 +4,13 @@ import java.time.format.DateTimeFormatter;
 
 public class Parser {
 
-    public static Task Converter(String line) {
+    public static Task ConvertTexttoTask(String line) {
         String inout = line;
-        //while (!inout.equals("bye")) {
-        Task task;
-        //System.out.println(inout);
+        Task task;;
         String[] word = inout.split(" ", 2);
         if (word[0].equals("todo")) {
             try {
                 return new Todo(word[1]);
-                        /*System.out.println("Got it. I've added this task:");
-                        yettodo.add(task);
-                        System.out.println(task);
-                        System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");*/
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("☹ OOPS!!! The description of a todo cannot be empty.");
 
@@ -30,10 +24,6 @@ public class Parser {
                 LocalDateTime formatDateTime = LocalDateTime.parse(holder[1], formatter);
                 task = new Deadline(holder[0], formatDateTime.format(formatter));
                 return new Deadline(holder[0], formatDateTime.format(formatter));
-                        /*System.out.println("Got it. I've added this task:");
-                        yettodo.add(task);
-                        System.out.println(task);
-                        System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");*/
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Wow so free is it?");
             }
@@ -61,7 +51,7 @@ public class Parser {
 
     }
 
-    public static String BackConversion(Task example) throws Exception {
+    public static String BackConversionTasktoText(Task example) throws Exception {
         if (example instanceof Todo) {
             return "todo " + example.description;
         } else if (example instanceof Deadline) {

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.application.Application;
@@ -12,9 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Region;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 
 
 public class Duke extends Application{
@@ -28,7 +24,7 @@ public class Duke extends Application{
     //private Image user = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     //private Image duke = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
     private static ArrayList<Task> yettodo = new ArrayList<Task>();
-    private static Storage Fileread = new Storage("./duke.txt", yettodo);
+    private static Storage storage = new Storage("./duke.txt", yettodo);
     public static ArrayList<Task> getYettodo()  {
         return yettodo;
     }
@@ -44,36 +40,39 @@ public class Duke extends Application{
         System.out.println("Hello! I'm Duke");
         System.out.println("For entering time and date, please enter it in this format: yyyy-MM-dd HH:mm");
         System.out.println("What can I do for you?");
-        yettodo = Fileread.fileReader();
+        yettodo = storage.fileReader();
         Duke duke = new Duke();
     }
 
     public Duke() {
         ui = new UI();
-        parseUserCommand(ui.getUserInput());
+        String inout = ui.getUserInput();
+        while (!inout.equals("bye")) {
+            System.out.println (inout);
+            parseUserCommand(inout);
+            inout = ui.getUserInput();// do while less messy cod
+            storage.fileUpdate();
+        }
+
+        System.out.println("Bye. Hope to see you again soon!");
     }
 
     private void parseUserCommand(String inout) {
         try {
             execute(inout);
-
-            Fileread.saveData();
-            System.out.println("Bye. Hope to see you again soon!");
-
+            storage.saveData();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            System.out.println ("That's a wrap");
         }
     }
 
     private void execute(String inout) {
-        while (!inout.equals("bye")) {
+
             Task task;
             //System.out.println(inout);
             String[] word = inout.split(" ", 2);
             if (inout.equals("list")) {
-                callList(inout);
+                callList();
             } else if (word[0].equals("done")) {
                 markasDone(word[1]);
             } else if (word[0].equals("delete")) {
@@ -89,17 +88,12 @@ public class Duke extends Application{
             } else if (word[0].equals("event")) {
                 eventAssign(inout, word[1]);
             }
-            else {
-                stuffAdd(inout);
 
-            }
-            ui.getUserInput();
-        }
+
     }
 
-    private void callList(String inout) {
-        Task task;
-        task = new Task(inout);
+    private void callList() {
+
         System.out.println("Here are the tasks in your list:");
         int i = 0;
         for (Task t : yettodo) {
@@ -109,25 +103,12 @@ public class Duke extends Application{
         }
     }
 
-    private void stuffAdd(String inout) {
-        Task task;
-        try {
-            task = new Task(inout);
-            yettodo.add(task);
-            Fileread.fileAddition(inout);
-            System.out.println("added: ");
-            System.out.println(inout);
-        }
-        catch(ArrayIndexOutOfBoundsException e){
-            System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-()");
-        }
-    }
 
     private void markasDone(String s) {
         try {
             int num = Integer.parseInt(s);
             yettodo.get(num - 1).Done();
-            Fileread.fileUpdate();
+            //storage.fileUpdate();
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Done what?");
         }
@@ -144,7 +125,8 @@ public class Duke extends Application{
             task = new Event(holder[0], formatDateTime.format(formatter));
             System.out.println("Got it. I've added this task:");
             yettodo.add(task);
-            Fileread.fileAddition(inout);
+            //storage.fileAddition(inout);
+            storage.fileUpdate();
             System.out.println(task);
             System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
         }
@@ -164,7 +146,8 @@ public class Duke extends Application{
             task = new Deadline(holder[0], formatDateTime.format(formatter));
             System.out.println("Got it. I've added this task:");
             yettodo.add(task);
-            Fileread.fileAddition(inout);
+            //storage.fileAddition(inout);
+            storage.fileUpdate();
             System.out.println(task);
             System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
         }
@@ -180,7 +163,8 @@ public class Duke extends Application{
             task = new Todo(word[1]);
             System.out.println("Got it. I've added this task:");
             yettodo.add(task);
-            Fileread.fileAddition(inout);
+            //storage.fileAddition(inout);
+            storage.fileUpdate();
             System.out.println(task);
             System.out.println("Now you have " + yettodo.size() + ((yettodo.size() > 1) ? " tasks" : " task") + " in the list");
         }
